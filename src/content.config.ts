@@ -8,9 +8,18 @@ const work = defineCollection({
     title: z.string(),
     client: z.string(),
     year: z.number(),
+    duration: z.string().optional(),
     role: z.string(),
     type: z.string(),
     summary: z.string(),
+    links: z
+      .array(
+        z.object({
+          label: z.string(),
+          href: z.string()
+        })
+      )
+      .default([]),
     caseSummary: z
       .array(
         z.object({

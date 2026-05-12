@@ -96,9 +96,20 @@ const stats = [
               <p>{project.data.type} / {project.data.year}</p>
               <h3>{project.data.title}</h3>
               <span>{project.data.summary}</span>
+              <div class="project-row__tags" aria-label="Услуги в проекте">
+                {project.data.services.slice(0, 3).map((service) => (
+                  <em>{service}</em>
+                ))}
+              </div>
             </div>
             <figure class="project-row__media">
-              <img src={project.data.heroImage} alt="" loading="eager" decoding="async" data-case-image />
+              <img
+                src={project.data.heroImage}
+                alt=""
+                loading={index < 2 ? "eager" : "lazy"}
+                decoding="async"
+                data-case-image
+              />
             </figure>
             <span class="project-row__arrow" aria-hidden="true">↗</span>
           </a>
@@ -154,7 +165,7 @@ const stats = [
       </div>
       <div class="contact__links">
         <a class="contact__link" href="mailto:katkhokhlova4@yandex.ru">katkhokhlova4@yandex.ru →</a>
-        <a href="http://t.me/katkhokhlova">Telegram: @katkhokhlova →</a>
+        <a href="https://t.me/katkhokhlova">Telegram: @katkhokhlova →</a>
       </div>
     </section>
   </main>

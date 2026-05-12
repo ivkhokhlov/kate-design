@@ -21,6 +21,14 @@ const projects = (await getCollection("work")).sort((a, b) => a.data.order - b.d
 const currentIndex = projects.findIndex((entry) => entry.id === project.id);
 const nextProject = projects[(currentIndex + 1) % projects.length];
 const { Content } = await render(project);
+const resultSummary = project.data.caseSummary.find((item) => item.label.toLowerCase().includes("результат"));
+const overviewItems = [
+  ["Роль", project.data.role],
+  ["Тип", project.data.type],
+  ["Сервисы", project.data.services.join(", ")],
+  ["Срок", project.data.duration ?? String(project.data.year)],
+  ["Результат", resultSummary?.title ?? project.data.metrics.at(-1)?.value ?? project.data.summary]
+];
 ---
 
 <BaseLayout title={`${project.data.title} — Екатерина Хохлова`} description={project.data.summary} image={project.data.heroImage}>
@@ -34,44 +42,54 @@ const { Content } = await render(project);
         <p data-hero-reveal>{project.data.summary}</p>
       </div>
       <figure class="case-hero__media">
-        <img src={project.data.heroImage} alt="" width="1800" height="1200" />
+        <img src={project.data.heroImage} alt={`${project.data.title}: ${project.data.type}`} width="1800" height="1200" />
       </figure>
     </section>
 
-    <section class="case-meta section">
-      <div>
-        <span>Роль</span>
-        <strong>{project.data.role}</strong>
-      </div>
-      <div>
-        <span>Тип</span>
-        <strong>{project.data.type}</strong>
-      </div>
-      <div>
-        <span>Сервисы</span>
-        <strong>{project.data.services.join(", ")}</strong>
-      </div>
-    </section>
-
-    {project.data.caseSummary.length > 0 && (
-      <section class="case-summary section" aria-label="Краткая сводка проекта">
-        {project.data.caseSummary.map((item) => (
-          <article data-reveal>
-            <span>{item.label}</span>
-            <h2>{item.title}</h2>
-            <p>{item.body}</p>
-          </article>
-        ))}
-      </section>
-    )}
-
-    <section class="case-metrics section" aria-label="Результаты проекта">
-      {project.data.metrics.map((metric) => (
-        <div data-reveal>
-          <strong>{metric.value}</strong>
-          <span>{metric.label}</span>
+    <section class="case-overview section" aria-labelledby="case-overview-title">
+      <div class="case-overview__header">
+        <div>
+          <p class="section__kicker">Case overview</p>
+          <h2 id="case-overview-title">Суть проекта</h2>
         </div>
-      ))}
+        {project.data.links.length > 0 && (
+          <div class="case-overview__links" aria-label="Ссылки проекта">
+            {project.data.links.map((link) => (
+              <a class="case-overview__link" href={link.href}>{link.label} →</a>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <dl class="case-overview__grid">
+        {overviewItems.map(([label, value]) => (
+          <div>
+            <dt>{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))}
+      </dl>
+
+      {project.data.caseSummary.length > 0 && (
+        <div class="case-overview__summary" aria-label="Краткая сводка проекта">
+          {project.data.caseSummary.map((item) => (
+            <article data-reveal>
+              <span>{item.label}</span>
+              <h3>{item.title}</h3>
+              <p>{item.body}</p>
+            </article>
+          ))}
+        </div>
+      )}
+
+      <div class="case-overview__metrics" aria-label="Результаты проекта">
+        {project.data.metrics.map((metric) => (
+          <div data-reveal>
+            <strong>{metric.value}</strong>
+            <span>{metric.label}</span>
+          </div>
+        ))}
+      </div>
     </section>
 
     <article class="case-body section" data-reveal>
