@@ -33,7 +33,7 @@ const { Content } = await render(project);
         <h1 data-hero-reveal>{project.data.title}</h1>
         <p data-hero-reveal>{project.data.summary}</p>
       </div>
-      <figure class="case-hero__media" data-parallax>
+      <figure class="case-hero__media">
         <img src={project.data.heroImage} alt="" width="1800" height="1200" />
       </figure>
     </section>
@@ -52,6 +52,18 @@ const { Content } = await render(project);
         <strong>{project.data.services.join(", ")}</strong>
       </div>
     </section>
+
+    {project.data.caseSummary.length > 0 && (
+      <section class="case-summary section" aria-label="Краткая сводка проекта">
+        {project.data.caseSummary.map((item) => (
+          <article data-reveal>
+            <span>{item.label}</span>
+            <h2>{item.title}</h2>
+            <p>{item.body}</p>
+          </article>
+        ))}
+      </section>
+    )}
 
     <section class="case-metrics section" aria-label="Результаты проекта">
       {project.data.metrics.map((metric) => (

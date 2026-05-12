@@ -21,14 +21,14 @@ if (!prefersReducedMotion) {
   gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
     gsap.fromTo(
       element,
-      { autoAlpha: 0, y: 42 },
+      { y: 34 },
       {
-        autoAlpha: 1,
         y: 0,
         duration: 0.75,
         ease: "power3.out",
         scrollTrigger: {
           trigger: element,
+          once: true,
           start: "top 86%"
         }
       }

@@ -14,9 +14,13 @@ Portfolio site for UX/UI designer Екатерина Хохлова. The content
 
 ```sh
 npm install
+npx playwright install chromium
 npm run dev
 npm run build
+npm run screenshots
 ```
 
 Case studies live in `src/content/work/*.mdx`, and their schema is defined in `src/content.config.ts`.
 Localized portfolio images live in `public/images/notion`.
+
+`npm run screenshots` starts Astro, captures all static pages plus `src/content/work/*.mdx` case pages in desktop and mobile viewports, and saves timestamped artifacts to `.playwright-cli/screenshots`.

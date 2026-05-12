@@ -11,6 +11,15 @@ const work = defineCollection({
     role: z.string(),
     type: z.string(),
     summary: z.string(),
+    caseSummary: z
+      .array(
+        z.object({
+          label: z.string(),
+          title: z.string(),
+          body: z.string()
+        })
+      )
+      .default([]),
     heroImage: z.string().min(1),
     accent: z.string(),
     featured: z.boolean().default(false),
