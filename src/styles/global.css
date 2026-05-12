@@ -1232,7 +1232,7 @@ img {
     justify-content: flex-end;
   }
 
-  .site-nav__links a[href="/#method"] {
+  .site-nav__method-link {
     display: none;
   }
 

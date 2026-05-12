@@ -217,7 +217,7 @@ async function startAstroServer(port) {
       recentOutput = `${recentOutput}${text}`.slice(-4000);
       process.stdout.write(text);
 
-      const match = text.match(/Local\s+(https?:\/\/127\.0\.0\.1:\d+\/?)/);
+      const match = text.match(/Local\s+(https?:\/\/127\.0\.0\.1:\d+(?:\/[^\s]*)?)/);
       if (match && !ready) {
         ready = true;
         clearTimeout(timeout);
@@ -266,7 +266,7 @@ async function capturePages(baseUrl, outputDir, routes, viewports) {
 
       for (const route of routes) {
         const page = await context.newPage();
-        const url = new URL(route.path, `${baseUrl}/`).toString();
+        const url = toRouteUrl(baseUrl, route.path);
         const file = path.join(outputDir, `${viewport.slug}-${route.slug}.png`);
 
         try {
@@ -378,6 +378,13 @@ function formatTimestamp(date) {
 
 function trimTrailingSlash(value) {
   return value.replace(/\/$/, "");
+}
+
+function toRouteUrl(baseUrl, routePath) {
+  const base = `${trimTrailingSlash(baseUrl)}/`;
+  const relativeRoute = routePath === "/" ? "" : routePath.replace(/^\/+/, "");
+
+  return new URL(relativeRoute, base).toString();
 }
 
 function stripAnsi(value) {

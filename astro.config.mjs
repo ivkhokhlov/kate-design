@@ -4,6 +4,8 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
+  site: "https://ivkhokhlov.github.io",
+  base: "/kate-design",
   devToolbar: {
     enabled: false
   },

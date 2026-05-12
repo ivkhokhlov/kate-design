@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 import SiteNav from "../components/SiteNav.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../utils/paths";
 
 const projects = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
 const heroProjects = projects.slice(0, 3);
@@ -39,7 +40,7 @@ const stats = [
       <div class="hero__visual" aria-hidden="true">
         {heroProjects.map((project, index) => (
           <figure class:list={["hero__work-shot", `hero__work-shot--${index + 1}`]} data-hero-reveal>
-            <img src={project.data.heroImage} alt="" loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+            <img src={withBase(project.data.heroImage)} alt="" loading={index === 0 ? "eager" : "lazy"} decoding="async" />
           </figure>
         ))}
       </div>
@@ -61,7 +62,7 @@ const stats = [
       <div>
         <div class="section__kicker">About</div>
         <figure class="intro__portrait" data-reveal>
-          <img src="/images/notion/profile.webp" alt="Портрет Екатерины Хохловой" loading="lazy" decoding="async" />
+          <img src={withBase("/images/notion/profile.webp")} alt="Портрет Екатерины Хохловой" loading="lazy" decoding="async" />
         </figure>
       </div>
       <div class="intro__statement" data-reveal>
@@ -90,7 +91,7 @@ const stats = [
 
       <div class="project-list">
         {projects.map((project, index) => (
-          <a class="project-row" href={`/work/${project.id}/`} data-case-row style={`--accent: ${project.data.accent}`}>
+          <a class="project-row" href={withBase(`/work/${project.id}/`)} data-case-row style={`--accent: ${project.data.accent}`}>
             <span class="project-row__index">0{index + 1}</span>
             <div class="project-row__copy">
               <p>{project.data.type} / {project.data.year}</p>
@@ -104,7 +105,7 @@ const stats = [
             </div>
             <figure class="project-row__media">
               <img
-                src={project.data.heroImage}
+                src={withBase(project.data.heroImage)}
                 alt=""
                 loading={index < 2 ? "eager" : "lazy"}
                 decoding="async"

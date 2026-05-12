@@ -1,7 +1,9 @@
 ---
 import { getCollection, render, type CollectionEntry } from "astro:content";
+import MarkdownImage from "../../components/MarkdownImage.astro";
 import SiteNav from "../../components/SiteNav.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../utils/paths";
 
 type Props = {
   project: CollectionEntry<"work">;
@@ -36,13 +38,13 @@ const overviewItems = [
     <section class="case-hero">
       <SiteNav tone="light" />
       <div class="case-hero__inner">
-        <a class="back-link" href="/#work">← Работы</a>
+        <a class="back-link" href={withBase("/#work")}>← Работы</a>
         <p class="eyebrow" data-hero-reveal>{project.data.client} / {project.data.year}</p>
         <h1 data-hero-reveal>{project.data.title}</h1>
         <p data-hero-reveal>{project.data.summary}</p>
       </div>
       <figure class="case-hero__media">
-        <img src={project.data.heroImage} alt={`${project.data.title}: ${project.data.type}`} width="1800" height="1200" />
+        <img src={withBase(project.data.heroImage)} alt={`${project.data.title}: ${project.data.type}`} width="1800" height="1200" />
       </figure>
     </section>
 
@@ -55,7 +57,7 @@ const overviewItems = [
         {project.data.links.length > 0 && (
           <div class="case-overview__links" aria-label="Ссылки проекта">
             {project.data.links.map((link) => (
-              <a class="case-overview__link" href={link.href}>{link.label} →</a>
+              <a class="case-overview__link" href={withBase(link.href)}>{link.label} →</a>
             ))}
           </div>
         )}
@@ -93,12 +95,12 @@ const overviewItems = [
     </section>
 
     <article class="case-body section" data-reveal>
-      <Content />
+      <Content components={{ img: MarkdownImage }} />
     </article>
 
     <section class="next-case section">
       <p class="section__kicker">Next case</p>
-      <a href={`/work/${nextProject.id}/`}>
+      <a href={withBase(`/work/${nextProject.id}/`)}>
         <span>{nextProject.data.title}</span>
         <strong>↗</strong>
       </a>

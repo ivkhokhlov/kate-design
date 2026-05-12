@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../utils/paths";
+
 interface Props {
   tone?: "dark" | "light";
 }
@@ -7,10 +9,10 @@ const { tone = "dark" } = Astro.props;
 ---
 
 <header class:list={["site-nav", tone === "light" && "site-nav--light"]}>
-  <a class="site-nav__brand" href="/">Екатерина Хохлова</a>
+  <a class="site-nav__brand" href={withBase("/")}>Екатерина Хохлова</a>
   <nav class="site-nav__links" aria-label="Основная навигация">
-    <a href="/#work">Работы</a>
-    <a href="/#method">Подход</a>
-    <a href="/#contact">Контакт</a>
+    <a href={withBase("/#work")}>Работы</a>
+    <a class="site-nav__method-link" href={withBase("/#method")}>Подход</a>
+    <a href={withBase("/#contact")}>Контакт</a>
   </nav>
 </header>

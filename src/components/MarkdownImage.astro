@@ -1,0 +1,8 @@
+---
+import { withBase } from "../utils/paths";
+
+const { src, ...attrs } = Astro.props;
+const resolvedSrc = typeof src === "string" ? withBase(src) : src;
+---
+
+<img {...attrs} src={resolvedSrc} />
