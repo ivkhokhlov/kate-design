@@ -1,0 +1,162 @@
+---
+import { getCollection } from "astro:content";
+import SiteNav from "../components/SiteNav.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const projects = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+const heroProjects = projects.slice(0, 3);
+
+const services = [
+  {
+    title: "UX research",
+    body: "Разбираю задачу, аудиторию, конкурентов и сценарии, чтобы дизайн решал конкретную проблему."
+  },
+  {
+    title: "Product UI",
+    body: "Проектирую мобильные интерфейсы, user flows, состояния, UI-компоненты и интерактивные прототипы."
+  },
+  {
+    title: "Identity & media",
+    body: "Делаю event-айдентику, лендинги, печатные носители, баннеры и графику для презентации проекта."
+  }
+];
+
+const stats = [
+  ["4", "кейса в портфолио"],
+  ["2", "сильных направления: UX/UI и visual"],
+  ["Figma", "основной рабочий инструмент"]
+];
+---
+
+<BaseLayout
+  title="Екатерина Хохлова — UX/UI дизайнер"
+  description="Портфолио Екатерины Хохловой: UX/UI дизайн мобильных приложений, исследования, прототипы, айдентика и digital-носители."
+  image="/images/notion/social.webp"
+>
+  <main>
+    <section class="hero" data-hero>
+      <SiteNav />
+      <div class="hero__visual" aria-hidden="true">
+        {heroProjects.map((project, index) => (
+          <figure class:list={["hero__work-shot", `hero__work-shot--${index + 1}`]} data-hero-reveal>
+            <img src={project.data.heroImage} alt="" loading={index === 0 ? "eager" : "lazy"} decoding="async" />
+          </figure>
+        ))}
+      </div>
+      <div class="hero__content">
+        <p class="eyebrow" data-hero-reveal>UX/UI дизайнер</p>
+        <h1 class="hero__title hero__title--person" data-hero-reveal>Екатерина<br />Хохлова</h1>
+        <p class="hero__lead" data-hero-reveal>
+          Проектирую мобильные интерфейсы, исследую пользовательские сценарии и собираю визуальные решения, которые можно защитить перед клиентом. <a href="http://t.me/katkhokhlova">Telegram: @katkhokhlova</a>
+        </p>
+        <div class="hero__actions" data-hero-reveal>
+          <a class="button button--primary" href="#work">Смотреть работы</a>
+          <a class="button button--secondary" href="mailto:katkhokhlova4@yandex.ru">Написать</a>
+        </div>
+      </div>
+      <p class="hero__caption" data-hero-reveal>Figma / UX research / UI kit</p>
+    </section>
+
+    <section class="intro section">
+      <div>
+        <div class="section__kicker">About</div>
+        <figure class="intro__portrait" data-reveal>
+          <img src="/images/notion/profile.webp" alt="Портрет Екатерины Хохловой" loading="lazy" decoding="async" />
+        </figure>
+      </div>
+      <div class="intro__statement" data-reveal>
+        Работала в рекламном агентстве-студии, где научилась решать задачи клиента, проводить исследования и защищать концепции. В дизайне люблю и аналитическую часть, и процесс проектирования макетов.
+      </div>
+      <div class="intro__stats" aria-label="Ключевые показатели">
+        {stats.map(([value, label]) => (
+          <div class="stat" data-reveal>
+            <strong>{value}</strong>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section class="work section" id="work">
+      <div class="section__header">
+        <div>
+          <p class="section__kicker">Кейсы</p>
+          <h2>Мобильные продукты, сервисные сценарии и визуальные системы.</h2>
+        </div>
+        <p>
+          В портфолио собраны UX/UI-концепты, редизайн приложения, event-айдентика и конкурсная графическая работа.
+        </p>
+      </div>
+
+      <div class="project-list">
+        {projects.map((project, index) => (
+          <a class="project-row" href={`/work/${project.id}/`} data-case-row style={`--accent: ${project.data.accent}`}>
+            <span class="project-row__index">0{index + 1}</span>
+            <div class="project-row__copy">
+              <p>{project.data.type} / {project.data.year}</p>
+              <h3>{project.data.title}</h3>
+              <span>{project.data.summary}</span>
+            </div>
+            <figure class="project-row__media">
+              <img src={project.data.heroImage} alt="" loading="eager" decoding="async" data-case-image />
+            </figure>
+            <span class="project-row__arrow" aria-hidden="true">↗</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="method section" id="method">
+      <div class="section__kicker">Подход</div>
+      <div class="method__grid">
+        <h2 data-reveal>От задачи клиента до понятного пользовательского сценария.</h2>
+        <div class="method__steps">
+          <div data-reveal>
+            <span>01</span>
+            <h3>Research</h3>
+            <p>Формулирую проблему, изучаю рынок, конкурентов, аудиторию и ограничения проекта.</p>
+          </div>
+          <div data-reveal>
+            <span>02</span>
+            <h3>Flow</h3>
+            <p>Собираю пользовательские сценарии, структуру экранов, гипотезы и интерактивный прототип.</p>
+          </div>
+          <div data-reveal>
+            <span>03</span>
+            <h3>Design</h3>
+            <p>Довожу интерфейс, визуальную систему и макеты до состояния, готового к презентации и разработке.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="services section" aria-labelledby="services-title">
+      <div class="section__header">
+        <div>
+          <p class="section__kicker">Services</p>
+          <h2 id="services-title">Что умею</h2>
+        </div>
+      </div>
+      <div class="services__grid">
+        {services.map((service) => (
+          <article data-reveal>
+            <h3>{service.title}</h3>
+            <p>{service.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div>
+        <p class="section__kicker">Контакт</p>
+        <h2>Готова обсудить продуктовую задачу, редизайн или визуальный концепт.</h2>
+      </div>
+      <a class="contact__link" href="mailto:katkhokhlova4@yandex.ru">katkhokhlova4@yandex.ru</a>
+    </section>
+  </main>
+
+  <script>
+    import "../scripts/motion.ts";
+  </script>
+</BaseLayout>

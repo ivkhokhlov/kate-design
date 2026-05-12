@@ -1,0 +1,16 @@
+---
+interface Props {
+  tone?: "dark" | "light";
+}
+
+const { tone = "dark" } = Astro.props;
+---
+
+<header class:list={["site-nav", tone === "light" && "site-nav--light"]}>
+  <a class="site-nav__brand" href="/">Екатерина Хохлова</a>
+  <nav class="site-nav__links" aria-label="Основная навигация">
+    <a href="/#work">Работы</a>
+    <a href="/#method">Подход</a>
+    <a href="mailto:katkhokhlova4@yandex.ru">Контакт</a>
+  </nav>
+</header>

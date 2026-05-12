@@ -1,0 +1,81 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import SiteNav from "../../components/SiteNav.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+type Props = {
+  project: CollectionEntry<"work">;
+};
+
+export async function getStaticPaths() {
+  const projects = await getCollection("work");
+
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project }
+  }));
+}
+
+const { project } = Astro.props as Props;
+const projects = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
+const currentIndex = projects.findIndex((entry) => entry.id === project.id);
+const nextProject = projects[(currentIndex + 1) % projects.length];
+const { Content } = await render(project);
+---
+
+<BaseLayout title={`${project.data.title} — Екатерина Хохлова`} description={project.data.summary} image={project.data.heroImage}>
+  <main class="case-page" style={`--accent: ${project.data.accent}`}>
+    <section class="case-hero">
+      <SiteNav tone="light" />
+      <div class="case-hero__inner">
+        <a class="back-link" href="/#work">← Работы</a>
+        <p class="eyebrow" data-hero-reveal>{project.data.client} / {project.data.year}</p>
+        <h1 data-hero-reveal>{project.data.title}</h1>
+        <p data-hero-reveal>{project.data.summary}</p>
+      </div>
+      <figure class="case-hero__media" data-parallax>
+        <img src={project.data.heroImage} alt="" width="1800" height="1200" />
+      </figure>
+    </section>
+
+    <section class="case-meta section">
+      <div>
+        <span>Роль</span>
+        <strong>{project.data.role}</strong>
+      </div>
+      <div>
+        <span>Тип</span>
+        <strong>{project.data.type}</strong>
+      </div>
+      <div>
+        <span>Сервисы</span>
+        <strong>{project.data.services.join(", ")}</strong>
+      </div>
+    </section>
+
+    <section class="case-metrics section" aria-label="Результаты проекта">
+      {project.data.metrics.map((metric) => (
+        <div data-reveal>
+          <strong>{metric.value}</strong>
+          <span>{metric.label}</span>
+        </div>
+      ))}
+    </section>
+
+    <article class="case-body section" data-reveal>
+      <Content />
+    </article>
+
+    <section class="next-case section">
+      <p class="section__kicker">Next case</p>
+      <a href={`/work/${nextProject.id}/`}>
+        <span>{nextProject.data.title}</span>
+        <strong>↗</strong>
+      </a>
+    </section>
+  </main>
+
+  <script>
+    import "../../scripts/motion.ts";
+  </script>
+</BaseLayout>
