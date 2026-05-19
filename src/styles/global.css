@@ -846,9 +846,11 @@ img {
 }
 
 .case-body {
-  font-size: clamp(1.05rem, 1.4vw, 1.22rem);
-  line-height: 1.65;
-  max-width: none;
+  font-size: clamp(1.02rem, 1.25vw, 1.16rem);
+  line-height: 1.68;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1180px;
 }
 
 .case-body h2 {
@@ -856,10 +858,14 @@ img {
   font-size: clamp(2rem, 4.4vw, 4.2rem);
   font-weight: 900;
   line-height: 0.92;
-  margin: 0 0 18px;
+  margin: clamp(72px, 9vw, 112px) 0 18px;
   max-width: 840px;
   overflow-wrap: anywhere;
   text-transform: uppercase;
+}
+
+.case-body h2:first-child {
+  margin-top: 0;
 }
 
 .case-body h3 {
@@ -867,7 +873,7 @@ img {
   font-size: clamp(1.55rem, 2.7vw, 2.45rem);
   font-weight: 900;
   line-height: 0.95;
-  margin: 52px 0 16px;
+  margin: 46px 0 16px;
   max-width: 720px;
   text-transform: uppercase;
 }
@@ -884,8 +890,8 @@ img {
 
 .case-body p {
   color: #3f463f;
-  margin: 0 0 34px;
-  max-width: 720px;
+  margin: 0 0 24px;
+  max-width: 65ch;
 }
 
 .case-body a {
@@ -905,14 +911,21 @@ img {
 .case-body ul,
 .case-body ol {
   color: #3f463f;
-  margin: 0 0 34px;
-  max-width: 720px;
+  display: grid;
+  gap: 10px;
+  margin: 0 0 30px;
+  max-width: 65ch;
   padding-left: 1.2em;
 }
 
 .case-body li {
-  margin: 0 0 12px;
+  margin: 0;
   padding-left: 0.2em;
+}
+
+.case-body li > p {
+  margin: 0;
+  max-width: none;
 }
 
 .case-body li::marker {
@@ -936,7 +949,8 @@ img {
 .case-comparison,
 .case-insight-grid,
 .case-flow-grid,
-.case-production-grid {
+.case-production-grid,
+.case-role-grid {
   border-top: 1px solid #c9ccc5;
   display: grid;
   gap: 0;
@@ -946,7 +960,8 @@ img {
 
 .case-comparison,
 .case-flow-grid,
-.case-production-grid {
+.case-production-grid,
+.case-role-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
@@ -957,7 +972,8 @@ img {
 .case-comparison > *,
 .case-insight-grid > *,
 .case-flow-grid > *,
-.case-production-grid > * {
+.case-production-grid > *,
+.case-role-grid > * {
   border-right: 1px solid #c9ccc5;
   min-width: 0;
   padding: 24px 26px 0 0;
@@ -966,28 +982,51 @@ img {
 .case-comparison > * + *,
 .case-insight-grid > * + *,
 .case-flow-grid > * + *,
-.case-production-grid > * + * {
+.case-production-grid > * + *,
+.case-role-grid > * + * {
   padding-left: clamp(22px, 3vw, 36px);
 }
 
 .case-comparison > *:last-child,
 .case-insight-grid > *:last-child,
 .case-flow-grid > *:last-child,
-.case-production-grid > *:last-child {
+.case-production-grid > *:last-child,
+.case-role-grid > *:last-child {
   border-right: 0;
 }
 
 .case-comparison ul,
 .case-insight-grid ul,
 .case-flow-grid ol,
-.case-production-grid ul {
+.case-production-grid ul,
+.case-role-grid ul {
   margin-bottom: 0;
 }
 
 .case-insight-grid p,
 .case-flow-grid p,
-.case-production-grid p {
+.case-production-grid p,
+.case-role-grid p {
   margin-bottom: 18px;
+}
+
+.case-role-grid h4 {
+  color: #626761;
+  font-size: 0.82rem;
+  letter-spacing: 0;
+  line-height: 1.25;
+  margin-bottom: 18px;
+}
+
+.case-role-grid ul {
+  font-size: clamp(0.98rem, 1.1vw, 1.06rem);
+  line-height: 1.55;
+  padding-left: 1.05em;
+}
+
+.case-role-grid p {
+  font-size: clamp(0.98rem, 1.1vw, 1.06rem);
+  line-height: 1.58;
 }
 
 .case-flow {
@@ -1040,7 +1079,7 @@ img {
   font-style: normal;
   line-height: 1.45;
   margin: 10px 0 0;
-  max-width: 720px;
+  max-width: 65ch;
 }
 
 .case-body p > em:only-child {
@@ -1160,7 +1199,8 @@ img {
   .case-comparison,
   .case-insight-grid,
   .case-flow-grid,
-  .case-production-grid {
+  .case-production-grid,
+  .case-role-grid {
     grid-template-columns: 1fr;
   }
 
@@ -1172,6 +1212,7 @@ img {
   .case-insight-grid > *,
   .case-flow-grid > *,
   .case-production-grid > *,
+  .case-role-grid > *,
   .stat {
     border-bottom: 1px solid #c9ccc5;
     border-right: 0;
@@ -1187,7 +1228,8 @@ img {
   .case-comparison > * + *,
   .case-insight-grid > * + *,
   .case-flow-grid > * + *,
-  .case-production-grid > * + * {
+  .case-production-grid > * + *,
+  .case-role-grid > * + * {
     padding-left: 0;
   }
 
@@ -1199,6 +1241,7 @@ img {
   .case-insight-grid > *:last-child,
   .case-flow-grid > *:last-child,
   .case-production-grid > *:last-child,
+  .case-role-grid > *:last-child,
   .services__grid article:last-child {
     border-bottom: 0;
   }
