@@ -1232,7 +1232,7 @@ img {
     justify-content: flex-end;
   }
 
-  .site-nav__method-link {
+  .site-nav .site-nav__method-link {
     display: none;
   }
 
