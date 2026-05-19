@@ -22,7 +22,7 @@ const { project } = Astro.props as Props;
 const projects = (await getCollection("work")).sort((a, b) => a.data.order - b.data.order);
 const currentIndex = projects.findIndex((entry) => entry.id === project.id);
 const nextProject = projects[(currentIndex + 1) % projects.length];
-const { Content } = await render(project);
+const { Content, headings } = await render(project);
 const resultSummary = project.data.caseSummary.find((item) => item.label.toLowerCase().includes("результат"));
 const overviewItems = [
   ["Роль", project.data.role],
@@ -31,6 +31,7 @@ const overviewItems = [
   ["Срок", project.data.duration ?? String(project.data.year)],
   ["Результат", resultSummary?.title ?? project.data.metrics.at(-1)?.value ?? project.data.summary]
 ];
+const sectionNavItems = headings.filter((heading) => heading.depth === 2);
 ---
 
 <BaseLayout title={`${project.data.title} — Екатерина Хохлова`} description={project.data.summary} image={project.data.heroImage}>
@@ -94,9 +95,27 @@ const overviewItems = [
       </div>
     </section>
 
-    <article class="case-body section" data-reveal>
-      <Content components={{ img: MarkdownImage }} />
-    </article>
+    <section class="case-content section">
+      {sectionNavItems.length > 1 && (
+        <aside class="case-section-nav" aria-label="Навигация по разделам кейса" data-case-section-nav>
+          <div class="case-section-nav__inner">
+            <p class="section__kicker">Разделы кейса</p>
+            <nav class="case-section-nav__links" aria-label="Разделы кейса">
+              {sectionNavItems.map((item, index) => (
+                <a href={`#${item.slug}`} data-case-section-link>
+                  <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                  <span>{item.text}</span>
+                </a>
+              ))}
+            </nav>
+          </div>
+        </aside>
+      )}
+
+      <article class="case-body" data-reveal>
+        <Content components={{ img: MarkdownImage }} />
+      </article>
+    </section>
 
     <section class="next-case section">
       <p class="section__kicker">Следующий кейс</p>
@@ -109,5 +128,55 @@ const overviewItems = [
 
   <script>
     import "../../scripts/motion.ts";
+
+    const sectionNav = document.querySelector("[data-case-section-nav]");
+
+    if (sectionNav) {
+      const links = Array.from(sectionNav.querySelectorAll<HTMLAnchorElement>("[data-case-section-link]"));
+      const headings = links
+        .map((link) => {
+          const id = decodeURIComponent(link.hash.slice(1));
+          const target = document.getElementById(id);
+
+          return target ? { link, target } : null;
+        })
+        .filter((item): item is { link: HTMLAnchorElement; target: HTMLElement } => Boolean(item));
+
+      const setActiveLink = (activeLink: HTMLAnchorElement) => {
+        links.forEach((link) => {
+          if (link === activeLink) {
+            link.setAttribute("aria-current", "true");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+      };
+
+      if (headings.length > 0) {
+        setActiveLink(headings[0].link);
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const visibleEntries = entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+            if (visibleEntries[0]) {
+              const current = headings.find((item) => item.target === visibleEntries[0].target);
+
+              if (current) {
+                setActiveLink(current.link);
+              }
+            }
+          },
+          {
+            rootMargin: "-18% 0px -68% 0px",
+            threshold: 0
+          }
+        );
+
+        headings.forEach(({ target }) => observer.observe(target));
+      }
+    }
   </script>
 </BaseLayout>
